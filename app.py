@@ -16,10 +16,12 @@ def create_model_RFE():
 # Configurar el registro
 logging.basicConfig(level=logging.DEBUG)
 
-# Cargar el modelo entrenado
+# Cargar el modelo entrenado y el escalador
 model = joblib.load('modeloNeuR2.pkl')
 scaler = joblib.load('dataSetScalado.pkl')
-app.logger.debug('Modelo cargado correctamente.')
+# Cargar el OrdinalEncoder
+encoder = joblib.load('ordinal_encoder.pkl')
+app.logger.debug('Modelo y transformadores cargados correctamente.')
 
 @app.route('/')
 def home():
@@ -31,12 +33,13 @@ def predict():
         # Obtener los datos enviados en el request
         year = float(request.form['year'])
         driven = float(request.form['km_driven'])
-        fuel = float(request.form['fuel'])
-        max_power = float(request.form['max_power (in bph)'])
+        fuel = request.form['fuel']  # Mantén como string para el encoder
+        max_power = float(request.form['max_power'])
 
         # Verificar los datos recibidos
-        app.logger.debug(f'year: {year},km_driven: {driven}, fuel: {fuel}, max_power (in bph): {max_power}')
+        app.logger.debug(f'year: {year}, km_driven: {driven}, fuel: {fuel}, max_power (in bph): {max_power}')
 
+        # Crear el DataFrame de entrada
         input_data = pd.DataFrame({
             'Unnamed: 0': [0],
             'name': [0],
@@ -55,11 +58,15 @@ def predict():
             'transmission_Manual': [0],
         })
 
+        # Convertir la columna 'fuel' usando el OrdinalEncoder
+        input_data['fuel'] = encoder.transform(input_data[['fuel']])
+
         # Escalar los datos de entrada
         scaled_data = scaler.transform(input_data)
 
         # Seleccionar solo las características usadas para el modelo
-        scaled_data_for_prediction = scaled_data[:, [0, 1, 6, 7]]  # Asegúrate de que estos índices son correctos
+        # Asegúrate de que los índices sean correctos según tu modelo
+        scaled_data_for_prediction = scaled_data[:, [0, 1, 6, 7]]
 
         # Realizar la predicción con los datos escalados
         prediccion = model.predict(scaled_data_for_prediction)
