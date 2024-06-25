@@ -9,8 +9,8 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 # Cargar el modelo entrenado
-model = joblib.load('modeloNeuronaR2.pkl')
-scaler = joblib.load('dataFrameScalado.pkl')
+model = joblib.load('modeloNeuR2.pkl')
+scaler = joblib.load('dataSetScalado.pkl')
 app.logger.debug('Modelo cargado correctamente.')
 
 @app.route('/')
@@ -21,26 +21,30 @@ def home():
 def predict():
     try:
         # Obtener los datos enviados en el request
-        Schooling = float(request.form['Schooling'])
-        HIVAIDS = float(request.form['HIVAIDS'])
-        healthexppercapita = float(request.form['healthexppercapita'])
-        fertilityrate = float(request.form['fertilityrate'])
+        year = float(request.form['year'])
+        driven = float(request.form['km_driven'])
+        fuel = float(request.form['fuel'])
+        max_power = float(request.form['max_power (in bph)'])
 
         # Verificar los datos recibidos
-        app.logger.debug(f'Schooling: {Schooling}, HIVAIDS: {HIVAIDS}, healthexppercapita: {healthexppercapita}, fertilityrate: {fertilityrate}')
+        app.logger.debug(f'year: {year}, km_driven: {driven}, fuel: {fuel}, max_power (in bph): {max_power}')
 
         input_data = pd.DataFrame({
-            'Schooling': [Schooling],
-            'HIV.AIDS': [HIVAIDS],
-            'Status': [0],
-            'wateraccess': [0],
-            'tuberculosis': [0],
-            'inflation': [0],
-            'healthexppercapita': [healthexppercapita],
-            'fertilityrate': [fertilityrate],
-            'CO2': [0],
-            'urbanpopgrowth': [0], 
-            'leastdeveloped': [0]
+            'Unnamed: 0': [0],
+            'name': [0],
+            'year': [year],
+            'km_driven': [driven],
+            'fuel': [fuel],
+            'seller_type': [0],
+            'owner': [0],
+            'seats': [0],
+            'max_power (in bph)': [max_power],
+            'Mileage': [0], 
+            'Engine (CC)': [0],
+            'Mileage Unit_km/kg': [0],
+            'Mileage Unit_kmpl': [0],
+            'transmission_Automatic': [0],
+            'transmission_Manual': [0],
         })
 
         # Escalar los datos de entrada
