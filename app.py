@@ -27,7 +27,7 @@ def predict():
         max_power = float(request.form['max_power (in bph)'])
 
         # Verificar los datos recibidos
-        app.logger.debug(f'year: {year}, km_driven: {driven}, fuel: {fuel}, max_power (in bph): {max_power}')
+        app.logger.debug(f'year: {year},km_driven: {driven}, fuel: {fuel}, max_power (in bph): {max_power}')
 
         input_data = pd.DataFrame({
             'Unnamed: 0': [0],
