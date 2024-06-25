@@ -20,7 +20,7 @@ logging.basicConfig(level=logging.DEBUG)
 model = joblib.load('modeloNeuR2.pkl')
 scaler = joblib.load('dataSetScalado.pkl')
 # Asegúrate de que la ruta del archivo encoder sea correcta
-encoder = joblib.load('ordinal_encoder.pkl')
+encoder = joblib.load('ordinalencoder.pkl')
 app.logger.debug('Modelo y transformadores cargados correctamente.')
 
 @app.route('/')
