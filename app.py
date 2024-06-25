@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 import joblib
-import pandas as pd  
+import pandas as pd
 import logging
 
 app = Flask(__name__)
@@ -8,55 +8,46 @@ app = Flask(__name__)
 # Configurar el registro
 logging.basicConfig(level=logging.DEBUG)
 
-# Definir la función create_model_RFE
-def create_model_RFE():
-    # Aquí va la definición de tu función
-    pass
-
 # Cargar el modelo entrenado
-model = joblib.load('modeloNeuR2.pkl')
-scaler = joblib.load('dataSetScalado.pkl')
+model = joblib.load('modeloNeuronaR2.pkl')
+scaler = joblib.load('dataFrameScalado.pkl')
 app.logger.debug('Modelo cargado correctamente.')
 
 @app.route('/')
-def home(): 
+def home():
     return render_template('formulario.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         # Obtener los datos enviados en el request
-        max_power = float(request.form['max_power (in bph)'])
-        year = float(request.form['year'])
-        driven = float(request.form['km_driven'])
-        gas = float(request.form['fuel'])
+        Schooling = float(request.form['Schooling'])
+        HIVAIDS = float(request.form['HIVAIDS'])
+        healthexppercapita = float(request.form['healthexppercapita'])
+        fertilityrate = float(request.form['fertilityrate'])
 
         # Verificar los datos recibidos
-        app.logger.debug(f'max_power (in bph): {max_power}, year: { year }, km_driven: {driven}, fuel: {gas}')
+        app.logger.debug(f'Schooling: {Schooling}, HIVAIDS: {HIVAIDS}, healthexppercapita: {healthexppercapita}, fertilityrate: {fertilityrate}')
 
         input_data = pd.DataFrame({
-            'Unnamed: 0': [0],
-            'name': [0],
-            'year': [year],
-            'km_driven': [driven],
-            'fuel': [gas],
-            'seller_type': [0],
-            'owner': [0],
-            'seats': [0],
-            'max_power (in bph)': [max_power],
-            'Mileage': [0], 
-            'Engine (CC)': [0],
-            'Mileage Unit_km/kg': [0],
-            'Mileage Unit_kmpl': [0],
-            'transmission_Automatic': [0],
-            'transmission_Manual': [0]
+            'Schooling': [Schooling],
+            'HIV.AIDS': [HIVAIDS],
+            'Status': [0],
+            'wateraccess': [0],
+            'tuberculosis': [0],
+            'inflation': [0],
+            'healthexppercapita': [healthexppercapita],
+            'fertilityrate': [fertilityrate],
+            'CO2': [0],
+            'urbanpopgrowth': [0], 
+            'leastdeveloped': [0]
         })
 
         # Escalar los datos de entrada
         scaled_data = scaler.transform(input_data)
 
         # Seleccionar solo las características usadas para el modelo
-        scaled_data_for_prediction = scaled_data[:, [2, 3, 4, 8]]  # Asegúrate de que estos índices son correctos
+        scaled_data_for_prediction = scaled_data[:, [0, 1, 6, 7]]  # Asegúrate de que estos índices son correctos
 
         # Realizar la predicción con los datos escalados
         prediccion = model.predict(scaled_data_for_prediction)
