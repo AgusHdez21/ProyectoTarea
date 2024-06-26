@@ -8,7 +8,7 @@ import logging
 
 app = Flask(__name__)
 
-# Función para crear el modelo (si es necesaria, asegúrate de definirla correctamente)
+# Función para crear el modelo (si es necesaria)
 def create_model_RFE():
     model = Sequential()
     model.add(Dense(64, input_dim=10, activation='relu'))  # Ajusta input_dim según tus datos
@@ -18,9 +18,12 @@ def create_model_RFE():
     return model
 
 # Cargar el modelo entrenado y el escalador
-model = joblib.load('modeloNeuR2.pkl')
-scaler = joblib.load('DataScaled.pkl')
-app.logger.debug('Modelo y transformadores cargados correctamente.')
+try:
+    model = joblib.load('modeloNeuR2.pkl')
+    scaler = joblib.load('DataScaled.pkl')
+    app.logger.debug('Modelo y transformadores cargados correctamente.')
+except Exception as e:
+    app.logger.error(f'Error cargando el modelo o el escalador: {str(e)}')
 
 @app.route('/')
 def home():
@@ -32,7 +35,7 @@ def predict():
         # Obtener los datos enviados en el request
         year = float(request.form['year'])
         driven = float(request.form['km_driven'])
-        engine = float(request.form['engine']) 
+        engine = float(request.form['engine'])
         max_power = float(request.form['max_power'])
 
         # Crear el DataFrame de entrada con todas las características necesarias
