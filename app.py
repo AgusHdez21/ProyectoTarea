@@ -17,7 +17,7 @@ def create_model_RFE():
 logging.basicConfig(level=logging.DEBUG)
 # Cargar el modelo entrenado y el escalador
 model = joblib.load('modeloNeuR2.pkl')
-scaler = joblib.load('dataSetScalado.pkl')
+scaler = joblib.load('DataScaled.pkl')
 app.logger.debug('Modelo y transformadores cargados correctamente.')
 
 @app.route('/')
