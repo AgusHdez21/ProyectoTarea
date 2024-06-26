@@ -19,7 +19,7 @@ def create_model_RFE():
 
 # Cargar el modelo entrenado y el escalador
 try:
-    model = joblib.load('modeloNeuR2.pkl')
+    model = joblib.load('modeloRf.pkl')
     scaler = joblib.load('DataScaled.pkl')
     app.logger.debug('Modelo y transformadores cargados correctamente.')
 except Exception as e:
@@ -57,15 +57,21 @@ def predict():
             'transmission_Manual': [0],      # Valor predeterminado
         })
 
+        app.logger.debug(f'DataFrame de entrada creado:{input_data}')
+
         # Escalar los datos de entrada
         scaled_data = scaler.transform(input_data)
 
+        scaled_data_for_prediction = scaled_data[:,[2,3,8,10]]
+        
         # Realizar la predicción con los datos escalados
-        prediction = model.predict(scaled_data)
-        prediction_value = round(float(prediction[0]), 2)
+        prediction = model.predict(scaled_data_for_prediction)
+        app.logger.debug(f'Prediccion:{prediction[0]}')
+
+        #prediction_value = round(float(prediction[0]), 2)
 
         # Devolver la predicción como JSON
-        return jsonify({'prediction': prediction_value})
+        return jsonify({'prediction': prediction[0]})
 
     except Exception as e:
         app.logger.error(f'Error en la predicción: {str(e)}')
