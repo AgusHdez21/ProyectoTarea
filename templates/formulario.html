@@ -5,7 +5,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #eef2f3;
             margin: 0;
             padding: 0;
             display: flex;
@@ -15,24 +15,29 @@
         }
         h1 {
             color: #333;
+            text-align: center;
+            margin-bottom: 20px;
         }
         form {
             background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
         }
         label {
             display: block;
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: bold;
+            color: #555;
         }
         input[type="text"] {
-            width: 100%;
+            width: calc(100% - 20px);
             padding: 10px;
             margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            box-sizing: border-box;
         }
         input[type="submit"] {
             background-color: #28a745;
@@ -42,6 +47,7 @@
             border-radius: 4px;
             cursor: pointer;
             margin-top: 20px;
+            width: 100%;
         }
         input[type="submit"]:hover {
             background-color: #218838;
@@ -49,6 +55,8 @@
         #resultado {
             margin-top: 20px;
             font-size: 18px;
+            text-align: center;
+            color: #333;
         }
     </style>
     <script>
@@ -82,22 +90,24 @@
     </script>
 </head>
 <body>
-    <h1>Predicción de Precios de Autos</h1>
-    <form id="formulario" onsubmit="clasificarInsecto(event)">
-        <label for="year">Ingresa el año:</label>
-        <input type="text" id="year" name="year"><br><br>
+    <div>
+        <h1>Predicción de Precios de Autos</h1>
+        <form id="formulario" onsubmit="clasificarInsecto(event)">
+            <label for="year">Ingresa el año:</label>
+            <input type="text" id="year" name="year">
 
-        <label for="km_driven">Ingresa los Km recorridos:</label>
-        <input type="text" id="km_driven" name="km_driven"><br><br>
-        
-        <label for="max_power">Potencia máxima (en bph):</label>
-        <input type="text" id="max_power" name="max_power"><br><br>
+            <label for="km_driven">Ingresa los Km recorridos:</label>
+            <input type="text" id="km_driven" name="km_driven">
+            
+            <label for="max_power">Potencia máxima (en bph):</label>
+            <input type="text" id="max_power" name="max_power">
 
-        <label for="engine">Motor (en CC):</label>
-        <input type="text" id="engine" name="engine"><br><br>
+            <label for="engine">Motor (en CC):</label>
+            <input type="text" id="engine" name="engine">
 
-        <input type="submit" value="Enviar">
-    </form>
-    <p id="resultado"></p>
+            <input type="submit" value="Enviar">
+        </form>
+        <p id="resultado"></p>
+    </div>
 </body>
 </html>
