@@ -1,9 +1,14 @@
 from flask import Flask, request, render_template, jsonify
 import joblib
 import pandas as pd
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from sklearn.preprocessing import StandardScaler
 import logging
 
 app = Flask(__name__)
+
+# Función para crear el modelo (si es necesaria, asegúrate de definirla correctamente)
 def create_model_RFE():
     model = Sequential()
     model.add(Dense(64, input_dim=10, activation='relu'))  # Ajusta input_dim según tus datos
@@ -27,15 +32,15 @@ def predict():
         # Obtener los datos enviados en el request
         year = float(request.form['year'])
         driven = float(request.form['km_driven'])
-        engine = request.form['Engine (CC)'] 
-        max_power = float(request.form['max_power (in bph)'])
+        engine = request.form['engine'] 
+        max_power = float(request.form['max_power'])
 
         # Crear el DataFrame de entrada
         input_data = pd.DataFrame({
             'year': [year],
             'km_driven': [driven],
-            'max_power (in bph)': [max_power],
-            'Engine (CC)': [engine]
+            'engine': [engine],
+            'max_power': [max_power]
         })
 
         # Escalar los datos de entrada
