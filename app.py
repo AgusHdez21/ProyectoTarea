@@ -32,15 +32,26 @@ def predict():
         # Obtener los datos enviados en el request
         year = float(request.form['year'])
         driven = float(request.form['km_driven'])
-        engine = request.form['engine'] 
+        engine = float(request.form['engine']) 
         max_power = float(request.form['max_power'])
 
-        # Crear el DataFrame de entrada
+        # Crear el DataFrame de entrada con todas las características necesarias
         input_data = pd.DataFrame({
+            'Unnamed: 0': [0],               # Valor predeterminado
+            'name': [0],                     # Valor predeterminado
             'year': [year],
             'km_driven': [driven],
-            'engine': [engine],
-            'max_power': [max_power]
+            'fuel': [0],                     # Valor predeterminado
+            'seller_type': [0],              # Valor predeterminado
+            'owner': [0],                    # Valor predeterminado
+            'seats': [0],                    # Valor predeterminado
+            'max_power (in bph)': [max_power],
+            'Mileage': [0],                  # Valor predeterminado
+            'Engine (CC)': [engine],
+            'Mileage Unit_km/kg': [0],       # Valor predeterminado
+            'Mileage Unit_kmpl': [0],        # Valor predeterminado
+            'transmission_Automatic': [0],   # Valor predeterminado
+            'transmission_Manual': [0],      # Valor predeterminado
         })
 
         # Escalar los datos de entrada
