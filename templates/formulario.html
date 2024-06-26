@@ -7,15 +7,15 @@
             event.preventDefault();
             const year= document.getElementById('year').value;
             const driven = document.getElementById('km_driven').value;
-            const gas = document.getElementById('fuel').value;
             const max_power = document.getElementById('max_power (in bph)').value;
+            const engine = document.getElementById('Engine (CC)').value;
 
             fetch('/predict', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `year=${year}&km_driven=${driven}&fuel=${gas}&max_power (in bph)=${max_power}`,
+                body: `year=${year}&km_driven=${driven}&max_power (in bph)=${max_power}&Engine (CC)=${engine}`,
             })
             .then(response => response.json())
             .then(data => {
@@ -40,12 +40,12 @@
 
         <label for="km_driven">Ingresa los Km recorridos:</label>
         <input type="text" id="km_driven" name="km_driven"><br><br>
-
-        <label for="fuel">Tipo de gas</label>
-        <input type="text" id="fuel" name="fuel"><br><br>
         
         <label for="max_power (in bph)">Longitud del Abdomen:</label>
         <input type="text" id="max_power (in bph)" name="max_power (in bph)"><br><br>
+
+        <label for="Engine (CC)">Tipo de gas</label>
+        <input type="text" id="Engine (CC)" name="Engine (CC)"><br><br>
 
         <input type="submit" value="Enviar">
     </form>
