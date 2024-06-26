@@ -6,10 +6,18 @@ import logging
 
 app = Flask(__name__)
 
+def create_model_RFE():
+    model = Sequential()
+    model.add(Dense(64, input_dim=10, activation='relu'))  # Ajusta input_dim según tus datos
+    model.add(Dense(32, activation='relu'))
+    model.add(Dense(1, activation='linear'))
+    model.compile(loss='mean_squared_error', optimizer='adam')
+    return model
+
 # Cargar el modelo entrenado y el escalador
 model = joblib.load('modeloNeuR2.pkl')
 scaler = joblib.load('DataScaled.pkl')
-app.logger.debug('Modelo y transformadores cargados correctamente.')
+app.logger.debug('Modelo cargados correctamente.')
 
 @app.route('/')
 def home():
